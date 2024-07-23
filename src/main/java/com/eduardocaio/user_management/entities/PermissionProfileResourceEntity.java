@@ -2,7 +2,7 @@ package com.eduardocaio.user_management.entities;
 
 import org.springframework.beans.BeanUtils;
 
-import com.eduardocaio.user_management.dto.ProfileUserDTO;
+import com.eduardocaio.user_management.dto.PermissionProfileResourceDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,31 +16,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_profile_user")
+@Table(name = "tb_permission_profile_resource")
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProfileUserEntity {
+public class PermissionProfileResourceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
-    private UserEntity user;
-
-    @ManyToOne
     @JoinColumn(name = "id_profile")
     private ProfileEntity profile;
 
-    public ProfileUserEntity(ProfileUserDTO profileUser) {
-        BeanUtils.copyProperties(profileUser, this);
-        if (profileUser != null && profileUser.getUser() != null) {
-            this.user = new UserEntity(profileUser.getUser());
+    @ManyToOne
+    @JoinColumn(name = "id_resource")
+    private ResourceEntity resource;
+
+    public PermissionProfileResourceEntity(PermissionProfileResourceDTO permission){
+        BeanUtils.copyProperties(permission, this);
+        if (permission != null && permission.getProfile() != null) {
+            this.profile = new ProfileEntity(permission.getProfile());
         }
-        if (profileUser != null && profileUser.getProfile() != null) {
-            this.profile = new ProfileEntity(profileUser.getProfile());
+        if (permission != null && permission.getResource() != null) {
+            this.resource = new ResourceEntity(permission.getResource());
         }
     }
 
