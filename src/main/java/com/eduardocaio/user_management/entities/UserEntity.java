@@ -3,9 +3,12 @@ package com.eduardocaio.user_management.entities;
 import org.springframework.beans.BeanUtils;
 
 import com.eduardocaio.user_management.dto.UserDTO;
+import com.eduardocaio.user_management.entities.enums.StatusUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,6 +33,10 @@ public class UserEntity {
 
         @Column(nullable = false, unique = true)
         private String email;
+
+        @Enumerated(EnumType.STRING)
+        @Column(nullable = false)
+        private StatusUser status;
 
         public UserEntity(UserDTO user){
             BeanUtils.copyProperties(user, this);
@@ -79,6 +86,14 @@ public class UserEntity {
              this.email = email;
         }
 
+        public StatusUser getStatus() {
+            return status;
+        }
+
+        public void setStatus(StatusUser status) {
+            this.status = status;
+        }
+
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -103,6 +118,8 @@ public class UserEntity {
                 return false;
             return true;
         }
+
+       
 
         
 

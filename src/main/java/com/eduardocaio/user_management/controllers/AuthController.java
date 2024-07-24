@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eduardocaio.user_management.dto.AuthenticationDTO;
+import com.eduardocaio.user_management.dto.UserDTO;
 import com.eduardocaio.user_management.services.AuthenticationService;
+import com.eduardocaio.user_management.services.UserService;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,10 +21,17 @@ public class AuthController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Autowired UserService userService;
+
     @PostMapping(value = "/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationDTO authentication){
         return ResponseEntity.ok(authenticationService.login(authentication));
         
+    }
+
+    @PostMapping(value = "/signup")
+    public void signUp(@RequestBody UserDTO newUser){
+            userService.signUp(newUser);
     }
 
 

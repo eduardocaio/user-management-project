@@ -3,6 +3,7 @@ package com.eduardocaio.user_management.dto;
 import org.springframework.beans.BeanUtils;
 
 import com.eduardocaio.user_management.entities.UserEntity;
+import com.eduardocaio.user_management.entities.enums.StatusUser;
 
 public class UserDTO {
 
@@ -11,6 +12,7 @@ public class UserDTO {
         private String login;
         private String password;
         private String email;
+        private StatusUser status;
 
         public UserDTO(UserEntity user){
             BeanUtils.copyProperties(user, this);
@@ -59,6 +61,16 @@ public class UserDTO {
         public void setEmail(String email) {
             this.email = email;
         }
+
+        public StatusUser getStatus() {
+            return status;
+        }
+
+        public void setStatus(StatusUser status) {
+            this.status = status;
+        }
+
+        
 
         
 

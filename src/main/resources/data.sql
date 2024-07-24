@@ -1,4 +1,4 @@
-INSERT INTO TB_USER (ID, NAME, LOGIN, PASSWORD, EMAIL) VALUES (1, 'Julia Candido', 'julia', '1234','julia@gmail.com');
+INSERT INTO TB_USER (ID, NAME, LOGIN, PASSWORD, EMAIL, STATUS) VALUES (1, 'Julia Candido', 'julia', '1234','julia@gmail.com', 'ATIVO');
 
 ALTER SEQUENCE TB_USER_ID_SEQ RESTART WITH 2;
 
