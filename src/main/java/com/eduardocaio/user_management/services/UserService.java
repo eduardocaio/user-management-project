@@ -1,6 +1,8 @@
 package com.eduardocaio.user_management.services;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.eduardocaio.user_management.dto.UserDTO;
 import com.eduardocaio.user_management.entities.UserEntity;
+import com.eduardocaio.user_management.entities.VerificationUserEntity;
 import com.eduardocaio.user_management.entities.enums.StatusUser;
 import com.eduardocaio.user_management.repositories.UserRepository;
+import com.eduardocaio.user_management.repositories.VerificationUserRepository;
 
 @Service 
 public class UserService {
@@ -20,6 +24,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
+    @Autowired
+    private VerificationUserRepository verificationUserRepository;
+
     @Autowired
     EmailService emailService;
 
@@ -41,7 +48,13 @@ public class UserService {
         userEntity.setId(null);
         userRepository.save(userEntity);
 
-        emailService.sendEmailText(userEntity.getEmail(), "Confirmar email", "Voce está recebendo um email de cadastro");
+        VerificationUserEntity verification = new VerificationUserEntity();
+        verification.setUser(userEntity);
+        verification.setUuid(UUID.randomUUID());
+        verification.setExpiration(Instant.now().plusMillis(900000));
+        verificationUserRepository.save(verification);
+
+        emailService.sendEmailText(userEntity.getEmail(), "Confirmar email", "Voce está recebendo um email de cadastro. O número para validação é: " + verification.getUuid());
     }
 
     public UserDTO update(UserDTO user){
