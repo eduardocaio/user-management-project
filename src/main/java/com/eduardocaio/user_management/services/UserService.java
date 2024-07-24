@@ -57,6 +57,26 @@ public class UserService {
         emailService.sendEmailText(userEntity.getEmail(), "Confirmar email", "Voce está recebendo um email de cadastro. O número para validação é: " + verification.getUuid());
     }
 
+    public String verifyRegister(String uuid){
+        VerificationUserEntity userVerify = verificationUserRepository.findByUuid(UUID.fromString(uuid)).get();
+        if(userVerify != null){
+            if(userVerify.getExpiration().compareTo(Instant.now()) >= 0){
+                UserEntity user = userVerify.getUser();
+                user.setStatus(StatusUser.ATIVO);
+                userRepository.save(user);
+                verificationUserRepository.delete(userVerify);
+                return "Usuário verificado";
+            }
+            else{
+                verificationUserRepository.delete(userVerify);
+                return "Tempo de  verificação expirado";
+            }
+        }
+        else{
+                return "Usuario nao verificado";
+        }
+    }
+
     public UserDTO update(UserDTO user){
         UserEntity userEntity = new UserEntity(user);
         return new UserDTO(userRepository.save(userEntity));
